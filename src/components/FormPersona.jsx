@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card, Form, Button } from 'react-bootstrap';
+import { Card, Form, Button, Alert } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 
 const FormPersona = () => {
@@ -9,6 +9,7 @@ const FormPersona = () => {
   const [apellido, setApellido] = useState('');
   const [dni, setDni] = useState(0);
   const [email, setEmail] = useState('');
+  const [alerta, setAlerta] = useState('');
 
   const [listaPersonas, setListaPersonas] = useState(personaLocalStorage);
 
@@ -18,6 +19,11 @@ const FormPersona = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if ([nombre, apellido, dni, email].includes('')) {
+      mostrarAlerta('Completar todos los datos');
+      return;
+    }
+    //si se completa todos los datos se agrega la persona
     agregarPersona({ nombre, apellido, dni, email });
   };
 
@@ -36,6 +42,15 @@ const FormPersona = () => {
     setEmail('');
   };
 
+  //función para mostrar alerta
+  const mostrarAlerta = (alerta) => {
+    setAlerta(alerta);
+
+    setTimeout(() => {
+      setAlerta('');
+    }, 3000);
+  };
+
   return (
     <>
       <Card>
@@ -44,6 +59,7 @@ const FormPersona = () => {
             Administrar Personas
           </Card.Title>
           <Form onSubmit={handleSubmit}>
+            {alerta && <Alert variant="danger">{alerta}</Alert>}
             <Form.Label className="display-6 mb-3 mt-1">
               <em>Ingrese nueva persona:</em>
             </Form.Label>
