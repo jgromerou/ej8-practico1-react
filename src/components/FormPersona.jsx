@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
+import Swal from 'sweetalert2';
 
 const FormPersona = () => {
   let personaLocalStorage =
@@ -17,33 +18,37 @@ const FormPersona = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(nombre, apellido, dni, email);
     agregarPersona({ nombre, apellido, dni, email });
   };
 
   const agregarPersona = (persona) => {
     setListaPersonas([...listaPersonas, persona]);
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Se agregó correctamente la nueva persona',
+      showConfirmButton: false,
+      timer: 1500,
+    });
     setNombre('');
     setApellido('');
-    setDni(0);
+    setDni('');
     setEmail('');
   };
 
   return (
     <>
-      {/* Agrego una card */}
       <Card>
         <Card.Body>
-          <Card.Title className="mb-3 text-uppercase display-6 fw-bold">
+          <Card.Title className="mb-3 text-uppercase display-6 fw-bold text-center text-lg-start">
             Administrar Personas
           </Card.Title>
-          {/* Agrego un formulario  */}
           <Form onSubmit={handleSubmit}>
-            <Form.Label className="display-5 mb-3 mt-2">
+            <Form.Label className="display-6 mb-3 mt-1">
               <em>Ingrese nueva persona:</em>
             </Form.Label>
-            <Form.Group className="mb-3" controlId="nombrePersona">
-              <Form.Label className="display-6">Nombre</Form.Label>
+            <Form.Group className="mb-4" controlId="nombrePersona">
+              <Form.Label className="fw-bold">Nombre</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Ingrese nombre de la persona"
@@ -52,8 +57,8 @@ const FormPersona = () => {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="apellidoPersona">
-              <Form.Label className="display-6">Apellido</Form.Label>
+            <Form.Group className="mb-4" controlId="apellidoPersona">
+              <Form.Label className="fw-bold">Apellido</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Ingrese apellido de la persona"
@@ -62,8 +67,10 @@ const FormPersona = () => {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="dniPersona">
-              <Form.Label className="display-6">DNI</Form.Label>
+            <Form.Group className="mb-4" controlId="dniPersona">
+              <Form.Label className="fw-bold">
+                DNI <em> - sólo números </em>
+              </Form.Label>
               <Form.Control
                 type="number"
                 placeholder="Ingrese DNI de la persona"
@@ -72,8 +79,8 @@ const FormPersona = () => {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="emailPersona">
-              <Form.Label className="display-6">Email</Form.Label>
+            <Form.Group className="mb-4" controlId="emailPersona">
+              <Form.Label className="fw-bold">Email</Form.Label>
               <Form.Control
                 type="email"
                 placeholder="Ingrese email de la persona"
